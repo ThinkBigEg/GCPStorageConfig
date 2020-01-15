@@ -8,6 +8,9 @@ sudo apt install git
 ```
 git clone https://github.com/ThinkBigEg/GCPStorageConfig.git
 ```
+- change branches for python 3.6 ```git checkout dev``` 
+- change branches for python 2.7 ``` git checkout dev_python_2_7```
+
 - installing library 
 ```
 pip install /path/to/GCPStorageConfig/
