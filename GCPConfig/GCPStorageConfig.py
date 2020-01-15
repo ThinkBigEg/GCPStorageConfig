@@ -1,5 +1,5 @@
 from google.cloud import storage
-from gutil.LoggingBase import LoggingBase
+from GCPConfig.GCPConfig import GCPConfig
 import datetime
 
 """
@@ -16,20 +16,20 @@ This class is based on Google Cloud Storage
 """
 
 
-class GCPStorageConfig(LoggingBase):
+class GCPStorageConfig(GCPConfig):
     """
     Requires setting the Environment Variable GOOGLE_APPLICATION_CREDENTIALS to the .json path of a
     service account that have access to the projects runtime config
     """
 
-    def __init__(self, project_name):
+    def __init__(self, project_name, bucket_name, root_config="config", date_format='%y.%m.%d %H:%M:%S'):
 
-        LoggingBase.__init__(self)
+        GCPConfig.__init__(self)
         self.project_name = project_name
-        self.date_format = '%y.%m.%d %H:%M:%S'
+        self.date_format = date_format
         self.storage_client = storage.client.Client()
-        self.bucket_name = "{}_datalake".format(project_name)
-        self.root_config = "config"
+        self.bucket_name = bucket_name
+        self.root_config = root_config
         self.bucket = self.storage_client.get_bucket(self.bucket_name)
 
     def _create_blob_from_string(self, location, value, max_trials):
