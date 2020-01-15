@@ -13,7 +13,7 @@ git clone https://github.com/ThinkBigEg/GCPStorageConfig.git
 pip install /path/to/GCPStorageConfig/
 ```
 ## using api 
-###1- Create a Role with sufficient priviledges
+###1- Create a Role with sufficient privileges at least 
 Create a new Role from [here](https://console.cloud.google.com/iam-admin/roles) and assign to it the following permissions:
   - storage.buckets.get
   - storage.buckets.list
@@ -31,3 +31,7 @@ to GCP (more on that later). You can create a Service Account with a single key,
 from [here](https://console.cloud.google.com/apis/credentials), 
 alternatively [this interface](https://console.cloud.google.com/iam-admin/serviceaccounts) can be used.
 
+### 3- export your key 
+```
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
+```
