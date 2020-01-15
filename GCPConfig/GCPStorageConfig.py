@@ -141,7 +141,7 @@ class GCPStorageConfig(GCPConfig):
                     # read config variable as string no need to download its file
                     variable_value = config_variable.download_as_string(self.storage_client)
                     # returning variable value
-                    return variable_value
+                    return variable_value.decode('utf-8')
                 else:
                     # if configuration or variable does not exist: return None
                     return None
