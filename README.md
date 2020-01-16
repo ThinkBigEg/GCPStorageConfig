@@ -38,3 +38,85 @@ alternatively [this interface](https://console.cloud.google.com/iam-admin/servic
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
 ```
+### 4 package specification
+#### 1- name : GCPConfig
+- ##### PACKAGE CONTENTS: 
+    - ##### GCPConfig
+    - ##### GCPStorageConfig
+    - ##### LoggingBase
+ ### 5- classes specification
+1. ### name: LoggingBase
+    - #### Description: Any application that runs through the system extends LoggingBase class
+    - #### methods 
+        -  #### def __init__(self):
+
+2. ### name: GCPConfig
+    - #### Description: abstract Class config base class 
+    - ### methods 
+        - ##### def __init__(self):
+        - ##### def create_config(self, config_name, config_description="NA", max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - config_description : str configration 
+                - max_trials: int number of trails to create config 
+            - return : boolean (cteated - faild)
+        - ##### def delete_config(self, config_name, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - max_trials: int number of trails to create config 
+            - return boolean (deleted - faild)
+        - ##### def create_variable(self, config_name, variable_name, variable_value, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : str variable name  
+                - variable_value : str value
+                - max_trials: int number of trails to create config 
+            - return : boolean (cteated - faild)
+        - ##### def create_date_variable(self, config_name, variable_name, date_value, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : str variable name  
+                - variable_value : date value
+                - max_trials: int number of trails to create config 
+            - return : boolean (cteated - faild)
+        - ##### def update_date_variable(self, config_name, variable_name, date_value, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : datetime variable name  
+                - variable_value : date value
+                - max_trials: int number of trails to create config 
+            - return : boolean (updated - faild)
+        - ##### def delete_variable(self, config_name, variable_name, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : str variable name  
+                - max_trials: int number of trails to create config 
+            - return : boolean (deleted - faild)
+        - ##### def update_variable(self, config_name, variable_name, variable_value, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : str variable name  
+                - variable_value : str value
+                - max_trials: int number of trails to create config 
+            - return : boolean (updated - faild)
+        - ##### def get_variable_value(self, config_name, variable_name, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : str variable name  
+                - max_trials: int number of trails to create config 
+            - return : str value
+        - ##### def get_date_variable(self, config_name, variable_name, max_trials=3):
+            - params : 
+                - config_name :   str configration name 
+                - variable_name : str variable name  
+                - max_trials: int number of trails to create config 
+            - return : datetime value
+        - ##### def get_float_variable(self, config_name, variable_name, max_trials=3):
+            - params : 
+                - config_name :   str configuration name 
+                - variable_name : str variable name  
+                - max_trials: int number of trails to create config 
+            - return : datetime value
+3. ### name : GCPStorageConfig
+    - extends: GCPConfig
+    - description : extends GCPConfig functionality by using GCP storage as its storage space 
