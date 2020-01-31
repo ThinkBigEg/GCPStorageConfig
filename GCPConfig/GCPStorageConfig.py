@@ -1,22 +1,21 @@
+from GCPConfig.LoggingBase import LoggingBase
 from google.cloud import storage
-from GCPConfig.GCPConfig import GCPConfig
 import datetime
 
 """
 This is a util class that supports creating/updating/deleting 
 Applications configuration variables, and it meant to be a replacement 
-for GCPRuntimeConfig since its currently in beta, and gave us a couple 
-of fuckups a long the way. 
+for GCPRuntimeConfig since its currently in beta.
 
 This class is based on Google Cloud Storage
-    - All Configurations have a base_dir in the data lake ==> [config]
-    - A configuration is simply a directory 
-    - A configuration variable is a file in the configuration directory 
-    - A configuration variable Value is a value written in the configuration variable file
+    - All Configurations have a base_directory which is stored in a GCP bucket 
+    - A Configuration is simply a sub-directory in the base_directory
+    - A Configuration variable is a file in the Configuration directory 
+    - A Configuration variable Value is a value written in the configuration variable file
 """
 
 
-class GCPStorageConfig(GCPConfig):
+class GCPStorageConfig(LoggingBase):
     """
     Requires setting the Environment Variable GOOGLE_APPLICATION_CREDENTIALS to the .json path of a
     service account that have access to the projects runtime config
@@ -24,13 +23,26 @@ class GCPStorageConfig(GCPConfig):
 
     def __init__(self, project_name, bucket_name, root_config="config", date_format='%y.%m.%d %H:%M:%S'):
 
-        GCPConfig.__init__(self)
+        """
+
+        :param project_name: the name of the GCP project
+        :param bucket_name: the name of the GCP Cloud Storage bucket where all configuration will reside. this bucket
+        need to pre-exist on GCP Cloud Storage
+        :param root_config: the name of the base_directory to be created in the bucket, under which all configuration
+        sub-directories will reside
+        :param date_format: date format for storing date values
+        """
+
+        LoggingBase.__init__(self)
         self.project_name = project_name
-        self.date_format = date_format
-        self.storage_client = storage.client.Client()
         self.bucket_name = bucket_name
         self.root_config = root_config
+        self.date_format = date_format
+
+        self.storage_client = storage.client.Client()
         self.bucket = self.storage_client.get_bucket(self.bucket_name)
+
+        self.logger.info("init GCPStorageConfig")
 
     def _create_blob_from_string(self, location, value, max_trials):
         blob = self.bucket.blob(location)
@@ -63,13 +75,13 @@ class GCPStorageConfig(GCPConfig):
                 self.logger.error("error occurred {} retrying ".format(e))
         return False
 
-    def create_config(self, config_name, config_description="NA", max_trials=3):
+    def create_config(self, config_name, max_trials=3):
+
         """
         only create config (folder in google bucket)
         :param config_name: str config name
-        :param config_description: str not used but still needed for function consistency with GCPRuntimeConfig
         :param max_trials: int
-        :return:
+        :return: bool
         """
         location = "{}/{}/".format(self.root_config, config_name)
         return self._create_blob_from_string(location, location, max_trials)
@@ -79,10 +91,9 @@ class GCPStorageConfig(GCPConfig):
 
         :param config_name:
         :param max_trials:
-        :return:
+        :return: bool
         """
         location = "{}/{}/".format(self.root_config, config_name)
-        # creating google blob obj
         return self._delete_blob(location, max_trials)
 
     def create_variable(self, config_name, variable_name, variable_value, max_trials=3):
@@ -93,7 +104,7 @@ class GCPStorageConfig(GCPConfig):
         :param variable_name: str
         :param variable_value: str
         :param max_trials: int
-        :return:
+        :return: bool
         """
         location = "{}/{}/{}.txt".format(self.root_config, config_name, variable_name)
         return self._create_blob_from_string(location, str(variable_value), max_trials)
@@ -112,18 +123,19 @@ class GCPStorageConfig(GCPConfig):
     def update_variable(self, config_name, variable_name, variable_value, max_trials=3):
         self.delete_variable(config_name, variable_name, max_trials=max_trials)
         self.create_variable(config_name, variable_name, variable_value, max_trials=max_trials)
+        return True
 
     def create_date_variable(self, config_name, variable_name, date_value, max_trials=3):
-        # parsing date object to a string before
+        # parsing date object to a string
         date_str = date_value.strftime(self.date_format)
         return self.create_variable(config_name, variable_name, date_str, max_trials)
 
     def update_date_variable(self, config_name, variable_name, date_value, max_trials=3):
-        # parsing date object to a string before
+        # parsing date object to a string
         date_str = date_value.strftime(self.date_format)
         return self.update_variable(config_name, variable_name, date_str, max_trials)
 
-    def get_variable_value(self, config_name, variable_name, max_trials=3):
+    def get_variable(self, config_name, variable_name, max_trials=3):
 
         """
         :param config_name: str
@@ -151,14 +163,14 @@ class GCPStorageConfig(GCPConfig):
         return None
 
     def get_date_variable(self, config_name, variable_name, max_trials=3):
-        date_string = self.get_variable_value(config_name, variable_name, max_trials)
+        date_string = self.get_variable(config_name, variable_name, max_trials)
         if date_string:
             return datetime.datetime.strptime(date_string, self.date_format)
         else:
             return None
 
     def get_float_variable(self, config_name, variable_name, max_trials=3):
-        float_string = self.get_variable_value(config_name, variable_name, max_trials)
+        float_string = self.get_variable(config_name, variable_name, max_trials)
         if float_string:
             return float(float_string)
         else:

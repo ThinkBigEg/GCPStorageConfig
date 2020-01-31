@@ -1,9 +1,5 @@
 import logging
 
-"""
-Any application that runs through the system extends LoggingBase class
-"""
-
 
 class LoggingBase(object):
 
