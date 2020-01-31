@@ -4,10 +4,10 @@
 from setuptools import setup
 
 setup(
-    name='GCPConfig',
-    version="1.0.1",
+    name='GCPStorageConfig',
+    version="0.0.1",
     author='Ali Mohamed',
-    packages=["GCPConfig"],
+    packages=["GCPStorageConfig"],
     author_email='alialimohamed475@gmail.com',
     install_requires=[
         "google-cloud-storage"
