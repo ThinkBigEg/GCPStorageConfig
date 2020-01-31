@@ -1,4 +1,10 @@
-from GCPStorageConfig.LoggingBase import LoggingBase
+try:
+    # python 3.x
+    from GCPStorageConfig.LoggingBase import LoggingBase
+except Exception as e:
+    # python 2.x
+    from LoggingBase import LoggingBase
+
 from google.cloud import storage
 import datetime
 

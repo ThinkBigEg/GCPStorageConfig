@@ -10,10 +10,9 @@ You can use these key value pairs as a way to:
 
 This library provides a simple and convenient replacement to [GCP's Runtime Configuration](https://cloud.google.com/deployment-manager/runtime-configurator/)
 feature which is currently in Beta. More information on the rational behind the development 
-of this library can be found in this detailed [blog post]().
+of this library can be found in this detailed [blog post](). 
 
-This library is compatible with python ```3.x```. For python ```2.7``` support check 
-the ```dev_python_2_7``` branch which might be obsolete!
+This library is compatible with python ```2.x``` and ```3.x```
 
 ## Package installation
 
