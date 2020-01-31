@@ -49,7 +49,7 @@ class GCPStorageConfig(LoggingBase):
         for i in range(max_trials):
             try:
                 if blob.exists(self.storage_client):
-                    self.logger.info("blob {} is already exists".format(location))
+                    self.logger.info("blob {} already exists".format(location))
                     return True
                 else:
                     self.logger.info("creating blob {}".format(location))
@@ -69,7 +69,7 @@ class GCPStorageConfig(LoggingBase):
                     self.logger.info("blob {} is deleted".format(location))
                     return True
                 else:
-                    self.logger.info("blob {} does not exists".format(location))
+                    self.logger.info("blob {} does not exist".format(location))
                     return True
             except Exception as e:
                 self.logger.error("error occurred {} retrying ".format(e))
@@ -79,7 +79,7 @@ class GCPStorageConfig(LoggingBase):
 
         """
         only create config (folder in google bucket)
-        :param config_name: str config name
+        :param config_name: str
         :param max_trials: int
         :return: bool
         """
@@ -125,16 +125,6 @@ class GCPStorageConfig(LoggingBase):
         self.create_variable(config_name, variable_name, variable_value, max_trials=max_trials)
         return True
 
-    def create_date_variable(self, config_name, variable_name, date_value, max_trials=3):
-        # parsing date object to a string
-        date_str = date_value.strftime(self.date_format)
-        return self.create_variable(config_name, variable_name, date_str, max_trials)
-
-    def update_date_variable(self, config_name, variable_name, date_value, max_trials=3):
-        # parsing date object to a string
-        date_str = date_value.strftime(self.date_format)
-        return self.update_variable(config_name, variable_name, date_str, max_trials)
-
     def get_variable(self, config_name, variable_name, max_trials=3):
 
         """
@@ -161,6 +151,16 @@ class GCPStorageConfig(LoggingBase):
                 self.logger.error("error occurred while reading config variable: {}/{} error : {}"
                                   .format(config_name, config_variable, e))
         return None
+
+    def create_date_variable(self, config_name, variable_name, date_value, max_trials=3):
+        # parsing date object to a string
+        date_str = date_value.strftime(self.date_format)
+        return self.create_variable(config_name, variable_name, date_str, max_trials)
+
+    def update_date_variable(self, config_name, variable_name, date_value, max_trials=3):
+        # parsing date object to a string
+        date_str = date_value.strftime(self.date_format)
+        return self.update_variable(config_name, variable_name, date_str, max_trials)
 
     def get_date_variable(self, config_name, variable_name, max_trials=3):
         date_string = self.get_variable(config_name, variable_name, max_trials)
