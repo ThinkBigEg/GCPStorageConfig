@@ -12,24 +12,14 @@ This library provides a simple and convenient replacement to [GCP's Runtime Conf
 feature which is currently in Beta. More information on the rational behind the development 
 of this library can be found in this detailed [blog post]().
 
+This library is compatible with python ```3.x```. For python ```2.7``` support check 
+the ```dev_python_2_7``` branch which might be obsolete!
 
 ## Package installation
 
 - Clone this repository
 ```
 git clone https://github.com/ThinkBigEg/GCPStorageConfig.git
-```
-
-- Change branches for python 3.x 
-```
-cd /path/to/GCPStorageConfig/
-git checkout dev
-``` 
-
-- Change branches for python 2.x
- ```
-cd /path/to/GCPStorageConfig/
-git checkout dev_python_2_7
 ```
 
 - Install
@@ -41,7 +31,7 @@ pip install /path/to/GCPStorageConfig/
 This package interacts with your GCP Project - Cloud Storage. It needs to use a GCP 
 Service Account with sufficient permissions
 
-###1- Create a Role with sufficient privileges
+### 1- Create a Role with sufficient privileges
 Create a new Role from [here](https://console.cloud.google.com/iam-admin/roles) 
 and assign to it the following permissions:
   - storage.buckets.get
