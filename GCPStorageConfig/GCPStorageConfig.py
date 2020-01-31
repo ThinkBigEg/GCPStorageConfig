@@ -1,4 +1,4 @@
-from GCPConfig.LoggingBase import LoggingBase
+from GCPStorageConfig.LoggingBase import LoggingBase
 from google.cloud import storage
 import datetime
 
