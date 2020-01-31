@@ -133,3 +133,8 @@ gsc.delete_variable("test", "my_date_var")
 ## delete_config(config_name, max_trials=3)
 gsc.delete_config("test")
 ```
+
+
+## Questions ? 
+We're happy to help, 
+write us at ```info@think-big.solutions```
